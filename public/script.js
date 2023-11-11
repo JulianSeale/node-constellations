@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('distance_from_earth_miles', parseInt(document.getElementById('distance').value));
         formData.append('img', imageInput.files[0]); // Append the image file
   
-        const response = await fetch('http://localhost:3000/api/constellations', {
+        const response = await fetch('https://constell.onrender.com/api/constellations', {
           method: 'POST',
           body: formData, // Use the FormData object as the body
         });
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     async function fetchData() {
       try {
-        const response = await fetch('http://localhost:3000/api/constellations');
+        const response = await fetch('https://constell.onrender.com/api/constellations');
         const data = await response.json();
         renderData(data);
       } catch (error) {
