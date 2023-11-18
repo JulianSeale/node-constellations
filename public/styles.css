@@ -100,3 +100,57 @@ label {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: none;
 }
+
+
+
+.deleteButton {
+  background-color: #FF3333;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  text-decoration: none;
+  font-size: 14px;
+  margin-top: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.editButton {
+  background-color: #FFD700;
+  color: #000;
+  border: none;
+  padding: 5px 10px;
+  text-decoration: none;
+  font-size: 14px;
+  margin-right: 5px; /* Add some margin to separate buttons */
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.editButton:hover {
+  background-color: #FFA500;
+}
+
+
+/* Styling for the form container when in edit mode */
+#form.edit-mode {
+  background-color: #333;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: none;
+}
+
+#form.edit-mode label {
+  color: #fff;
+}
+
+#form.edit-mode input,
+#form.edit-mode textarea,
+#form.edit-mode select {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
