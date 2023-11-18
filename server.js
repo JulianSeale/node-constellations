@@ -96,17 +96,6 @@ app.get('/api/constellations', (req, res) => {
   res.json(constellations);
 });
 
-app.get('/api/constellation/:id', (req, res) => {
-  const constellationId = parseInt(req.params.id);
-  const constellation = constellations.find(c => c.id === constellationId);
-
-  if (constellation) {
-    res.json(constellation);
-  } else {
-    res.status(404).json({ error: 'Constellation not found' });
-  }
-});
-
 app.post('/api/constellations', upload.single('img'), async (req, res) => {
     try {
       const validatedData = schema.validate(req.body);
@@ -132,43 +121,7 @@ app.post('/api/constellations', upload.single('img'), async (req, res) => {
   });
 
   
-  app.put('/api/update-constellation/:id', upload.single('img'), async (req, res) => {
-    try {
-      const constellationId = parseInt(req.params.id);
-      const constellationToUpdate = constellations.find(c => c.id === constellationId);
-  
-      if (!constellationToUpdate) {
-        throw new Error('Constellation not found');
-      }
-  
-      const validatedData = schema.validate(req.body);
-  
-      if (validatedData.error) {
-        throw new Error(validatedData.error.details[0].message);
-      }
-  
-      const imagePath = req.file ? `/images/${req.file.filename}` : null;
-  
-      // Update the existing constellation with the new data
-      Object.assign(constellationToUpdate, validatedData.value, { img: imagePath });
-  
-      res.json({ message: 'Item updated successfully' });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  });
 
-app.delete('/api/delete-constellation/:id', (req, res) => {
-  const constellationId = parseInt(req.params.id);
-  const index = constellations.findIndex(c => c.id === constellationId);
-
-  if (index !== -1) {
-    constellations.splice(index, 1);
-    res.json({ message: 'Constellation deleted successfully' });
-  } else {
-    res.status(404).json({ error: 'Constellation not found' });
-  }
-});
 
   
 
