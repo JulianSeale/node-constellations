@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
   <title>Your Constellations Project</title>
 </head>
 <body>
  <h3> IF YOU WANT ADD YOUR FAVORITES SCROLL DOWN!</h3> 
+ <h3>NOW WITH EDIT AND DELETE BUTTONS!</h3>
+ <h3>A SIMPLE CLICK THEN WATCH THE MAGIC</h3>
  <div id="welcome-popup">Welcome to Constellations! (This message will disapper in 10 seconds)</div>
-  <div class="container" id="app"></div>
+  <div class="container" id="app">  </div>
   <div id="form" class="form-container">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" required>
@@ -26,7 +26,15 @@
     <label for="imageInput">Image:</label>
     <input type="file" id="imageInput" name="img" accept="image/*" required>
     <button id="submitButton">Submit</button>
+    <button class="editButton">Edit</button>
+    <button id="updateButton" style="display: none;">Update</button>
+    <button id="deleteButton" style="display: none;">Delete</button>
+    
+    
+
   </div>
+
+  
   <p id="successMessage" class="message success">Item added successfully!</p>
   <p id="errorMessage" class="message error">Error adding item!</p>
   <button id="addButton">Add Item</button>

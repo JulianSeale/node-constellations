@@ -11,8 +11,11 @@ app.use(express.json());
 const storage = multer.memoryStorage();
 const upload = multer({ dest: __dirname + "/public/images"});
 
+let nextConstellationId = 1; // Initialize the next available ID
+
 let constellations = [
     {
+      id: nextConstellationId++,
         name: "Orion",
         year: "Ancient times",
     myth: "In Greek mythology, Orion was a giant hunter. He was placed in the stars by Zeus after his death.",
@@ -22,6 +25,7 @@ let constellations = [
         img:"images/Orion.jpg"
       },
       {
+        id: nextConstellationId++,
         name: "Ursa Major",
         year: "Ancient times",
         myth: "In Greek mythology, Ursa Major represents Callisto, a nymph who was transformed into a bear by Zeus to protect her from his jealous wife Hera.",
@@ -31,6 +35,7 @@ let constellations = [
         img:"images/Ursa.jpg"
       },
       {
+        id: nextConstellationId++,
         name: "Crux",
         year: "Modern",
         myth: "No specific myth, but Crux is known as the Southern Cross and is prominent in the southern hemisphere.",
@@ -40,6 +45,7 @@ let constellations = [
         img:"images/Ursa.jpg"
       },
       {
+        id: nextConstellationId++,
         name: "Draco",
         year: "Ancient times",
     myth: "In Greek mythology, Draco represents a dragon that guarded the golden apples in the Garden of the Hesperides.",
@@ -49,6 +55,7 @@ let constellations = [
         img:"images/Draco.jpg"
       },
       {
+        id: nextConstellationId++,
         name: "Cygnus",
         year: "Ancient times",
         myth: "In Greek mythology, Cygnus represents Zeus in the form of a swan. It is also associated with the story of Orpheus and his lyre.",
@@ -58,6 +65,7 @@ let constellations = [
         img:"images/Cygnus.jpg"
       },
       {
+        id: nextConstellationId++,
         name: "Leo",
         year: "Ancient times",
         myth: "In Greek mythology, Leo is associated with the Nemean Lion, a beast slain by Hercules as one of his twelve labors.",
@@ -88,6 +96,17 @@ app.get('/api/constellations', (req, res) => {
   res.json(constellations);
 });
 
+app.get('/api/constellation/:id', (req, res) => {
+  const constellationId = parseInt(req.params.id);
+  const constellation = constellations.find(c => c.id === constellationId);
+
+  if (constellation) {
+    res.json(constellation);
+  } else {
+    res.status(404).json({ error: 'Constellation not found' });
+  }
+});
+
 app.post('/api/constellations', upload.single('img'), async (req, res) => {
     try {
       const validatedData = schema.validate(req.body);
@@ -99,6 +118,7 @@ app.post('/api/constellations', upload.single('img'), async (req, res) => {
       const imagePath = req.file ? `/images/${req.file.filename}` : null;
   
       const newConstellation = {
+        id: nextConstellationId++,
         ...validatedData.value,
         img: imagePath,
       };
@@ -110,6 +130,47 @@ app.post('/api/constellations', upload.single('img'), async (req, res) => {
       res.status(400).json({ error: error.message });
     }
   });
+
+  
+  app.put('/api/update-constellation/:id', upload.single('img'), async (req, res) => {
+    try {
+      const constellationId = parseInt(req.params.id);
+      const constellationToUpdate = constellations.find(c => c.id === constellationId);
+  
+      if (!constellationToUpdate) {
+        throw new Error('Constellation not found');
+      }
+  
+      const validatedData = schema.validate(req.body);
+  
+      if (validatedData.error) {
+        throw new Error(validatedData.error.details[0].message);
+      }
+  
+      const imagePath = req.file ? `/images/${req.file.filename}` : null;
+  
+      // Update the existing constellation with the new data
+      Object.assign(constellationToUpdate, validatedData.value, { img: imagePath });
+  
+      res.json({ message: 'Item updated successfully' });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+app.delete('/api/delete-constellation/:id', (req, res) => {
+  const constellationId = parseInt(req.params.id);
+  const index = constellations.findIndex(c => c.id === constellationId);
+
+  if (index !== -1) {
+    constellations.splice(index, 1);
+    res.json({ message: 'Constellation deleted successfully' });
+  } else {
+    res.status(404).json({ error: 'Constellation not found' });
+  }
+});
+
+  
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
